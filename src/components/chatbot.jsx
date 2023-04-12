@@ -35,8 +35,12 @@ function Chatbot() {
   };
 
     const [data, setData] = useState([]);
+<<<<<<< HEAD
     // const [history,setHistory] = useState([['HI how may i help you. \n can i know your current city name?']]);
     const [history,setHistory] = useState([['I am AdviserrBot, your virtual assistant at BDM Insurance. I am her to assist you with all your policy related queries and guide you through our process. \n \n Please let me know what are you looking for?']]);
+=======
+    const [history,setHistory] = useState([]);
+>>>>>>> 040025ec0f667e0375c82c7d7c61b589e96b7ec9
     const [opt, setOpt] = useState([]);
     const {dispatch} = useContext(ChatContext);
     // const {data} = useContext(ChatContext);
@@ -60,6 +64,7 @@ function Chatbot() {
     }
       console.log(data)
     const handleQuickButtonClicked = (message)=> {
+<<<<<<< HEAD
       if (message.toLowerCase() !=="claim status")
       {
         
@@ -100,6 +105,29 @@ function Chatbot() {
         console.log({'msg':{"msg":newMessage,"hst":history,"options":opt} })
         
         console.log("his:-",history)
+=======
+      addUserMessage (message);
+      // data.push(message) // DATA STORAGE
+      axios.post( api["key"]+'chatbot',{'msg':{"msg":message,"hst":history,"options":opt}})
+        .then(res=>{
+          console.log(res.data)
+          setHistory(res.data['hist'])
+          setOpt(res.data['opt'])
+          data.push(res.data['msg']) // DATA STORAGE
+          addResponseMessage(res.data['msg'])
+          if (res['options'] !==[] ){
+            setQuickButtons(res.data['options'])
+          }
+          else{
+            setQuickButtons([]);
+          }
+        })
+      .catch(err=>{
+        console.log(err);
+      });
+    }
+    const handleNewUserMessage = (newMessage) => {
+>>>>>>> 040025ec0f667e0375c82c7d7c61b589e96b7ec9
         // data.push(newMessage) // DATA STORAGE
         axios.post( api["key"]+'chatbot',{'msg':{"msg":newMessage,"hst":history,"options":opt} })
         .then(res=>{
@@ -118,6 +146,10 @@ function Chatbot() {
         console.log(data)
       };
       console.log("options:-",opt)
+<<<<<<< HEAD
+=======
+      console.log("his:-",history)
+>>>>>>> 040025ec0f667e0375c82c7d7c61b589e96b7ec9
       // console.log("options:-",opt)
 
 
