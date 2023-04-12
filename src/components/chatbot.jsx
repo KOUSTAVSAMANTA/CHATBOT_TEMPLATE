@@ -15,35 +15,44 @@ console.log("hello")
 // }
 
 
-const api = {"key":"http://127.0.0.1:8000/"}
+const api = {"key":"http://127.0.0.1:8000/",'ft':true}
 
 
 
 
 function Chatbot() {
     const [data, setData] = useState([]);
-    
+    const [history,setHistory] = useState([]);
+    const [opt, setOpt] = useState([]);
     const {dispatch} = useContext(ChatContext);
     // const {data} = useContext(ChatContext);
 
+    if(api['ft'] === true){
+      api['ft'] = false
 
-    axios.get(api["key"]+"CD")
-    .then(dat =>{
-      addResponseMessage(dat.data['msg']);
-      data.push(dat.data['msg']) // DATA STORAGE
-      if (dat.data['options'] !==[] ){
-        setQuickButtons(dat.data['options'])
-      }
-      else{
-        setQuickButtons([]);
-      }
-    })
-    console.log(data)
+      axios.get(api["key"]+"CD")
+      .then(dat =>{
+        addResponseMessage(dat.data['msg']);
+        // data.push(dat.data['msg']) 
+        opt.push(dat.data['option'])// DATA STORAGE
+        
+        if (dat.data['options'] !==[] ){
+          setQuickButtons(dat.data['options'])
+        }
+        else{
+          setQuickButtons([]);
+        }
+      })
+    }
+      console.log(data)
     const handleQuickButtonClicked = (message)=> {
-      data.push(message) // DATA STORAGE
-      axios.post( api["key"]+'chatbot',{'msg':message })
+      addUserMessage (message);
+      // data.push(message) // DATA STORAGE
+      axios.post( api["key"]+'chatbot',{'msg':{"msg":message,"hst":history,"options":opt}})
         .then(res=>{
           console.log(res.data)
+          setHistory(res.data['hist'])
+          setOpt(res.data['opt'])
           data.push(res.data['msg']) // DATA STORAGE
           addResponseMessage(res.data['msg'])
           if (res['options'] !==[] ){
@@ -58,10 +67,12 @@ function Chatbot() {
       });
     }
     const handleNewUserMessage = (newMessage) => {
-        data.push(newMessage) // DATA STORAGE
-        axios.post( api["key"]+'chatbot',{'msg':newMessage })
+        // data.push(newMessage) // DATA STORAGE
+        axios.post( api["key"]+'chatbot',{'msg':{"msg":newMessage,"hst":history,"options":opt} })
         .then(res=>{
           console.log(res.data)
+          setHistory(res.data['hist'])
+          setOpt(res.data['opt'])
           data.push(res.data['msg']) // DATA STORAGE
           addResponseMessage(res.data['msg'])
           if (res['options'] !==[] ){
@@ -73,6 +84,9 @@ function Chatbot() {
         });
         console.log(data)
       };
+      console.log("options:-",opt)
+      console.log("his:-",history)
+      // console.log("options:-",opt)
 
 
       return (
