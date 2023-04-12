@@ -12,6 +12,7 @@
     "react-chat-widget-2": "^1.0.23",
     "react-chat-widget-frame": "^2.1.15",
     "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
     "react-scripts": "5.0.1",
     "react-simple-chatbot": "^0.6.1",
     "styled-components": "^5.3.8",
