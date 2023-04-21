@@ -1,0 +1,28 @@
+.send label {
+    /* background-color: blue; */
+    margin-top: auto;
+    position: relative;
+    color: white;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); */
+    /* left: 900%; */
+    /* width: 10%; */
+    /* top: 900%; */
+}
+
+.send label p {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background-color: #282c34;
+    /* width: 210%; */
+    /* height: 50%; */
+    flex-direction: row;
+    gap: 1rem;
+    font-size: x-large;
+    flex: 1;
+    border-radius: 15px;
+    /* position: relative; */
+    /* padding: -5px; */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    /* adjust the values to your desired shadow effect */
+}
