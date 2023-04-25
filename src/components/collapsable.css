@@ -1,0 +1,32 @@
+.collapsible {
+    border: 1px solid #2b2525;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.collapsible-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #233e4d;
+}
+
+.collapsible-header:hover {
+    background-color: #0c0b0b;
+}
+
+.icon {
+    font-size: 1.2rem;
+    transition: transform 0.2s;
+}
+
+.icon-open {
+    transform: rotate(180deg);
+}
+
+.collapsible-body {
+    padding: 10px;
+    color: #0c0b0b;
+}

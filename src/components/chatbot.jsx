@@ -5,8 +5,27 @@ import 'react-chat-widget/lib/styles.css';
 import axios from 'axios';
 import UploadFile from './UploadFile';
 import Card from "./Cards";
+import VideoPlayer from './Videoplayer';
+import Collapsible from './Collapsible';
 import annyang from 'annyang';
 
+const data1 = [
+  {
+    title: 'First Collapsible',
+    content:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a quam eget dui malesuada rutrum. Proin ac risus turpis. Nunc auctor magna id justo suscipit auctor. Suspendisse vel mi euismod, varius orci vel, commodo libero.',
+  },
+  {
+    title: 'Second Collapsible',
+    content:
+      'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis eu risus vel mauris suscipit commodo. Nulla venenatis, turpis eu fringilla volutpat, mi ipsum consectetur nulla, ut elementum ipsum velit vitae nisi. ',
+  },
+  {
+    title: 'Third Collapsible',
+    content:
+      'Vivamus eu tellus sit amet augue malesuada facilisis a et velit. Nullam eleifend consequat augue in sagittis. In hac habitasse platea dictumst. Sed eu turpis sed metus dictum hendrerit at vel orci. Mauris bibendum sapien nec est vehicula dapibus.',
+  },
+];
 console.log("hello")
 // const data = {
 //   'msg':"hi how are you",
@@ -41,7 +60,7 @@ function Chatbot() {
           // setText("")
           // handleaudiostart();
         },
-        'medi *text': (text) => {
+        'empathy *text': (text) => {
           console.log(text)
           addUserMessage (text);
           handleNewUserMessage(text)
@@ -49,7 +68,7 @@ function Chatbot() {
           // setText("")
           // handleaudiostart();
         },
-        'hi medi *text': (text) => {
+        'hi empathy *text': (text) => {
           console.log(text)
           addUserMessage (text);
           handleNewUserMessage(text)
@@ -57,7 +76,7 @@ function Chatbot() {
           // setText("")
           // handleaudiostart();
         },
-        'hello medi *text': (text) => {
+        'hello empathy *text': (text) => {
           console.log(text)
           addUserMessage (text);
           handleNewUserMessage(text)
@@ -73,13 +92,14 @@ function Chatbot() {
           // setText("")
           // handleaudiostart();
         },
-        'thank you': () => {
+        'restart': () => {
           console.log('thank you')
           addUserMessage ("/restart");
           handleNewUserMessage("/restart")
         },
         'what is your name': () => {
-          console.log('My name is ChatGPT!');
+          addResponseMessage('My name is Mpathy!')
+          console.log('My name is Mpathy!');
         }
       });
     }, []);
@@ -89,10 +109,12 @@ function Chatbot() {
 
       axios.get(api["key"]+"CD")
       .then(dat =>{
-        addResponseMessage(dat.data['msg']);
-        // data.push(dat.data['msg']) 
-        opt.push(dat.data['option'])// DATA STORAGE
-        
+        if (dat.data['msg']!=="")
+        {
+          addResponseMessage(dat.data['msg']);
+          // data.push(dat.data['msg']) 
+        }
+        opt.push(dat.data['option'])// DATA STORAGE  
         if (dat.data['options'] !==[] ){
           setQuickButtons(dat.data['options'])
         }
@@ -113,6 +135,7 @@ function Chatbot() {
             setOpt(res.data['opt'])
             data.push(res.data['msg']) // DATA STORAGE
             console.log("type of msg",typeof(res.data['msg']))
+            
             if(typeof(res.data['msg'])!=="string")
             {
               let l=res.data['msg'].length
@@ -132,6 +155,28 @@ function Chatbot() {
             else{
               setQuickButtons([]);
             }
+            console.log("video",res.data['vid'])
+            try{
+              if (res.data['vid']!=="")
+              {
+                renderCustomComponent(VideoPlayer,{src:res.data['vid']})
+              }
+            }
+            catch(error)
+            {
+              console.log(error)
+            }
+            try{
+              if (res.data['msg'].includes("upload") === true)
+              {
+                renderCustomComponent(()=><UploadFile/>)
+                // addResponseMessage("Have you uploaded the File")
+                // setQuickButtons([{'label': 'Yes','value': 'Yes'},{'label': 'No','value': 'No'}])
+              }
+            }
+            catch(error){
+              console.log(error)
+            }
           })
         .catch(err=>{
           console.log(err);
@@ -148,9 +193,9 @@ function Chatbot() {
         catch(error){
           console.log(error)
         }
-        console.log({'msg':{"msg":newMessage,"hst":history,"options":opt} })
+        // console.log({'msg':{"msg":newMessage,"hst":history,"options":opt} })
         
-        console.log("his:-",history)
+        // console.log("his:-",history)
         // data.push(newMessage) // DATA STORAGE
         if (newMessage.includes("upload")===false)
         {
@@ -160,11 +205,36 @@ function Chatbot() {
             setHistory(res.data['hist'])
             setOpt(res.data['opt'])
             data.push(res.data['msg']) // DATA STORAGE
-            addResponseMessage(res.data['msg'])
-            setMemory(res.data['msg'])
-            console.log("alllllllllllllllllllll",memory)
 
-            
+            if(typeof(res.data['msg'])!=="string")
+            {
+              let l=res.data['msg'].length
+              for(let i=0;i<l;i++)
+              {
+                addResponseMessage(res.data['msg'][i])
+                setMemory(res.data['msg'][i])
+              }
+            }
+            else{
+              addResponseMessage(res.data['msg'])
+              setMemory(res.data['msg'])
+            }
+
+            setMemory(res.data['msg'])
+            // console.log("alllllllllllllllllllll",memory)
+
+            try{
+              if (res.data['vid']!=="")
+              {
+                renderCustomComponent(VideoPlayer,{src:res.data['vid']})
+              }
+            }
+            catch(error)
+            {
+              console.log(error)
+            }
+
+            console.log("anser is ",res.data['msg'].includes("upload"))
             try{
                 if (res.data['msg'].includes("upload") === true)
                 {
@@ -193,12 +263,14 @@ function Chatbot() {
       // console.log("options:-",opt)
       // setQuickButtons([{'label': 'Yes','value': 'Yes'},{'label': 'No','value': 'No'}])
 
-      // renderCustomComponent(()=><Card/>)
+      
+    
+      // renderCustomComponent(Collapsible,{data:data1})
       return (
         <Widget
         handleNewUserMessage={handleNewUserMessage}
-        title="Medi"
-        subtitle="Hello, how can I help you today?"
+        title="Hi i am Mpathy bot"
+        subtitle=""
         fullScreenMode={false}
         senderPlaceHolder="Type a message..."
         showCloseButton={true}

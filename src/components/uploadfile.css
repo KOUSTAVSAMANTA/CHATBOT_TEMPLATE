@@ -14,11 +14,12 @@
     align-items: center;
     padding: 1rem;
     background-color: #282c34;
+    font-size: large;
     /* width: 210%; */
     /* height: 50%; */
     flex-direction: row;
     gap: 1rem;
-    font-size: x-large;
+    /* font-size: x-large; */
     flex: 1;
     border-radius: 15px;
     /* position: relative; */

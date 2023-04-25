@@ -48,7 +48,7 @@ const UploadFile = () => {
         <input type="file" style={{display:"none"}} id="file" onChange={e=>check(e)}/>
         
         <label htmlFor="file">
-          <p>click to Upload <img src={Img} alt="" /></p>
+          <p>click to upload <img src={Img} alt="" /></p>
           
         </label>
       </div>
